@@ -1,0 +1,15 @@
+{
+    "IDX.aI.enableInlineCompletion": true,
+    "IDX.aI.enableCodebaseIndexing": true,
+    "editor.fontSize": 18,
+    "workbench.sideBar.location": "right",
+    "editor.mouseWheelZoom": false,
+    "chat.editor.fontSize": 14,
+    "markdown.preview.fontSize": 14,
+    "workbench.colorTheme": "Default High Contrast",
+    "editor.wordWrap": "on",
+    "prettier.semi": false,
+    "prettier.singleAttributePerLine": true,
+    "prettier.singleQuote": true,
+    "cSpell.language": "en,pl",
+}
