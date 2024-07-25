@@ -88,3 +88,15 @@ export const createArticle = async (formData: FormData) => {
     console.log(err)
   }
 }
+export const getArticles= async ()=>{
+try{
+  await connectToDb()
+  const allArticles= await Article.find()
+  return allArticles
+  
+}catch (err) {
+    console.log(err)
+  }
+
+
+}
