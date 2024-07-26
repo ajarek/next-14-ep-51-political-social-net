@@ -9,6 +9,7 @@ export type User = {
   isAdmin: boolean
 } 
 export type Article = {
+  [x: string]: any
   _id: string
   userName: string
   title: string

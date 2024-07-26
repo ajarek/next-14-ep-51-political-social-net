@@ -12,7 +12,7 @@ const CreatePost = () => {
   const [openVideo, setOpenVideo] = useState(false)
 
   return (
-    <div className="  w-3/4 grid grid-cols-1 gap-8 items-center justify-center border-2 p-4 rounded-lg">
+    <div className="  w-3/4 max-lg:w-full grid grid-cols-1 gap-8 items-center justify-center border-2 p-4 rounded-lg">
       <div className=" flex flex-col  gap-4">
         <h1 className="text-2xl font-bold">Napisz Artykuł</h1>
 

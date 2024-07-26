@@ -5,7 +5,8 @@ import { User, UserWithoutId, Article} from './models'
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
-
+import type {Article as ArticleType} from './models'
+import { auth } from '@/app/api/auth/auth'
 
 export const addUser = async (formData: UserWithoutId) => {
   const { username, email, password, img, isAdmin } = formData
@@ -70,8 +71,9 @@ export const updateUser = async (formData: FormData) => {
 }
 
 export const createArticle = async (formData: FormData) => {
+  const session = await auth()
   const rawFormData = {
-    userName:'lol',
+    userName: session?.user?.name||'',
     title: formData.get('title'),
     contents: formData.get('contents'),
     image:formData.get('image'),
@@ -88,10 +90,11 @@ export const createArticle = async (formData: FormData) => {
     console.log(err)
   }
 }
-export const getArticles= async ()=>{
+export const getArticles= async () =>{
 try{
   await connectToDb()
-  const allArticles= await Article.find()
+
+  const allArticles= await Article.find({}) as ArticleType[]
   return allArticles
   
 }catch (err) {

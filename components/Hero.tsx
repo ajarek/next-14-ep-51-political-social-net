@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Rocket } from 'lucide-react'
 const Hero = () => {
   return (
-    <div className='w-3/4 grid grid-cols-[1fr,_3fr] gap-8 items-center justify-center border-2 p-4 rounded-lg'>
+    <div className='w-3/4 max-lg:w-full grid grid-cols-[1fr,_3fr] gap-8 items-center justify-center border-2 p-4 rounded-lg'>
         
     <Image
       src={'/images/debata.png'}
