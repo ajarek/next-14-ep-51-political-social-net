@@ -103,3 +103,26 @@ try{
 
 
 }
+export const getArticle= async (id:string|number) =>{
+try{
+  await connectToDb()
+
+  const ArticleId= await Article.findById({_id:id}) as ArticleType
+  return ArticleId
+  
+}catch (err) {
+    console.log(err)
+  }
+
+
+}
+
+export const addLike = async (formData: FormData) => {
+  const id = formData.get('id')
+  console.log(id)
+}
+
+export const addComment = async (formData: FormData) => {
+  const id = formData.get('id')
+  console.log(id)
+}
