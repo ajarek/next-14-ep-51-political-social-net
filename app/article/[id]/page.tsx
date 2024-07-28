@@ -25,13 +25,10 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
           <h1>{newArticle?.userName}</h1>
         </div>
         <h1 className="text-2xl ">{newArticle?.title}</h1>
-        <p className='text-xl'>{newArticle?.contents}</p>
-        <div className="flex gap-16 ">
-         
-          
-        </div>
+        <p className="text-xl">{newArticle?.contents}</p>
+        <div className="flex gap-16 "></div>
         <div className="flex flex-col gap-4">
-        <div className="flex gap-2">
+          <div className="flex gap-2">
             <Heart
               color={
                 newArticle && newArticle.likes && newArticle.likes.length > 0
@@ -41,34 +38,45 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
             />
             <span>{newArticle?.likes.length} polubień</span>
           </div>
-          {session?<AddLike id={newArticle && (newArticle._id).toString()}/>:<Button variant={'destructive'} >Zaloguj się aby polubić</Button>}
+          {session ? (
+            <AddLike id={newArticle && newArticle._id.toString()} />
+          ) : (
+            <Button variant={'destructive'} className="w-fit">Zaloguj się aby polubić</Button>
+          )}
           <div className="flex gap-2 ">
             <MessageCircleMore
-              color={newArticle && newArticle.comments && newArticle.comments.length > 0 ? 'red' : 'gray'
-            }
+              color={
+                newArticle &&
+                newArticle.comments &&
+                newArticle.comments.length > 0
+                  ? 'green'
+                  : 'gray'
+              }
             />
             <span>{newArticle?.comments.length} komentarzy</span>
           </div>
-          {session?<AddComment id={newArticle && (newArticle._id).toString()}/>:<Button variant={'destructive'} >Zaloguj się aby dodać komentarz</Button>}
+          {session ? (
+            <AddComment id={newArticle && newArticle._id.toString()} />
+          ) : (
+            <Button variant={'destructive'} className="w-fit">
+              Zaloguj się aby dodać komentarz
+            </Button>
+          )}
         </div>
         <div className="flex flex-col gap-4">
-          <h2>Komentarze:</h2>{' '}
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias
-            eveniet, molestias illo ex aliquam quia blanditiis unde ducimus
-            recusandae repellat sunt impedit, doloribus autem doloremque
-            voluptas ad odit odio? Reprehenderit, perspiciatis eum soluta sint
-            cupiditate laboriosam alias debitis aliquam in consequuntur aperiam
-            unde quasi voluptatem dolorem ad itaque quos porro.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias
-            eveniet, molestias illo ex aliquam quia blanditiis unde ducimus
-            recusandae repellat sunt impedit, doloribus autem doloremque
-            voluptas ad odit odio? Reprehenderit, perspiciatis eum soluta sint
-            cupiditate laboriosam alias debitis aliquam in consequuntur aperiam
-            unde quasi voluptatem dolorem ad itaque quos porro.
-          </p>
+          <h2>Komentarze:</h2>
+          {newArticle &&
+            newArticle.comments &&
+            newArticle.comments.length > 0 &&
+            newArticle.comments.map((comment: any, index: number) => (
+              <div key={index}>
+                <div className="flex gap-2">
+                  <span className="text-gray-400">autor:</span>
+                  <h1>{comment.userName}</h1>
+                </div>
+                <p>{comment.description}</p>
+              </div>
+            ))}
         </div>
       </div>
     </div>

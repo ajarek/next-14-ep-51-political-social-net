@@ -21,6 +21,7 @@ const AddComment = ({ id}: { id: string | undefined}) => {
     <Textarea
       name='comment'
       placeholder='Dodaj Komentarz'
+      required
     />
     <Button
       type='submit'

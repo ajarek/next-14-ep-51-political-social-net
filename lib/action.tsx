@@ -94,7 +94,7 @@ export const getArticles= async () =>{
 try{
   await connectToDb()
 
-  const allArticles= await Article.find({}) as ArticleType[]
+  const allArticles= await Article.find({}).sort({createdAt:-1}) as ArticleType[]
   return allArticles
   
 }catch (err) {

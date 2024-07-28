@@ -28,10 +28,12 @@ const CreatePost = () => {
             type="text"
             placeholder="Tytuł Artykułu"
             name="title"
+            required
           />
           <Textarea
             placeholder="Treść Artykułu"
             name="contents"
+            required
           />
           {openImage && (
             <Input
