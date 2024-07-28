@@ -118,11 +118,57 @@ try{
 }
 
 export const addLike = async (formData: FormData) => {
+  const session = await auth()
   const id = formData.get('id')
-  console.log(id)
+  const userId=session?.user?.id
+  try {
+    await connectToDb()
+    const article = await Article.findById(id);
+    if (!article) {
+      return console.log('brak artykułów')
+    }
+
+    if (!article.likes.includes(userId)) {
+      article.likes.push(userId);
+    } else {
+      return console.log('Użytkownik już polubił ten artykuł')
+    }
+
+    await article.save();
+    console.log('zapisano' +userId)
+    revalidatePath('/article')
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const addComment = async (formData: FormData) => {
+  const session = await auth()
   const id = formData.get('id')
-  console.log(id)
+  const comment=formData.get('comment')
+  const userName=session?.user?.name
+ 
+  const commentObj={
+    userName:userName,
+    description:comment
+  }
+  try {
+    await connectToDb()
+    const article = await Article.findById(id);
+    if (!article) {
+      return console.log('brak artykułów')
+    }
+
+    if (!article.comments.includes(commentObj)) {
+      article.comments.push(commentObj);
+    } else {
+      return console.log('Użytkownik już polubił ten artykuł')
+    }
+
+    await article.save();
+    console.log('zapisano' +commentObj.userName)
+    revalidatePath('/article')
+  } catch (err) {
+    console.log(err)
+  }
 }

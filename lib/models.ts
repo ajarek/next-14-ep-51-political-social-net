@@ -17,7 +17,12 @@ export type Article = {
   image: string
   video: string
   likes: string[]
-  comments: string[]
+  comments: [
+    {
+      userName:string,
+      description:string
+    }
+  ]
 }
 
 export type UserWithoutId = Omit<User, '_id'>
@@ -40,7 +45,12 @@ const articleSchema = new mongoose.Schema(
     image: { type: String },
     video: { type: String },
     likes: { type: Array, default: [] },
-    comments: { type: Array, default: [] },
+    comments: [
+      {
+      userName:{type:String, required:true},
+      description: { type: String, required: true },
+      }
+    ],
   },
   { timestamps: true }
 )

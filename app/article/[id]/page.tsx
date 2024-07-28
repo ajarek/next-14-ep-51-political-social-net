@@ -3,8 +3,10 @@ import Image from 'next/image'
 import { Heart, MessageCircleMore } from 'lucide-react'
 import AddLike from '@/components/AddLike'
 import AddComment from '@/components/AddComment'
-
+import { Button } from '@/components/ui/button'
+import { auth } from '@/app/api/auth/auth'
 const ArticleId = async ({ params }: { params: { id: string } }) => {
+  const session = await auth()
   const newArticle = await getArticle(params.id)
   return (
     <div className="min-h-[calc(100vh-64px)] grid grid-cols-2 max-lg:grid-cols-1 px-24 py-12 items-start justify-center gap-8">
@@ -25,7 +27,11 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
         <h1 className="text-2xl ">{newArticle?.title}</h1>
         <p className='text-xl'>{newArticle?.contents}</p>
         <div className="flex gap-16 ">
-          <div className="flex gap-2">
+         
+          
+        </div>
+        <div className="flex flex-col gap-4">
+        <div className="flex gap-2">
             <Heart
               color={
                 newArticle && newArticle.likes && newArticle.likes.length > 0
@@ -35,17 +41,15 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
             />
             <span>{newArticle?.likes.length} polubień</span>
           </div>
-          <div className="flex gap-2">
+          {session?<AddLike id={newArticle && (newArticle._id).toString()}/>:<Button variant={'destructive'} >Zaloguj się aby polubić</Button>}
+          <div className="flex gap-2 ">
             <MessageCircleMore
               color={newArticle && newArticle.comments && newArticle.comments.length > 0 ? 'red' : 'gray'
             }
             />
             <span>{newArticle?.comments.length} komentarzy</span>
           </div>
-        </div>
-        <div className="flex gap-8">
-          <AddLike id={newArticle && (newArticle._id).toString()}/>
-          <AddComment id={newArticle && (newArticle._id).toString()}/>
+          {session?<AddComment id={newArticle && (newArticle._id).toString()}/>:<Button variant={'destructive'} >Zaloguj się aby dodać komentarz</Button>}
         </div>
         <div className="flex flex-col gap-4">
           <h2>Komentarze:</h2>{' '}
