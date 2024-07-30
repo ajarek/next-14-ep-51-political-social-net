@@ -1,11 +1,11 @@
 'use server'
 
 import connectToDb from './connectToDb'
-import { User, UserWithoutId, Article} from './models'
+import { User, UserWithoutId, Article } from './models'
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
-import type {Article as ArticleType} from './models'
+import type { Article as ArticleType } from './models'
 import { auth } from '@/app/api/auth/auth'
 
 export const addUser = async (formData: UserWithoutId) => {
@@ -72,14 +72,16 @@ export const updateUser = async (formData: FormData) => {
 
 export const createArticle = async (formData: FormData) => {
   const session = await auth()
+  const stringImage=formData?.get('image') as string
+  const hostname=stringImage?.split('//')[1].split('/')[0] 
   const rawFormData = {
-    userName: session?.user?.name||'',
+    userName: session?.user?.name || '',
     title: formData.get('title'),
     contents: formData.get('contents'),
-    image:formData.get('image'),
-    video:formData.get('video')
+    image: formData.get('image'),
+    video: formData.get('video'),
   }
-  console.log('rawFormData' + rawFormData)
+  console.log(hostname)
   try {
     await connectToDb()
     const newArticle = new Article(rawFormData)
@@ -90,52 +92,48 @@ export const createArticle = async (formData: FormData) => {
     console.log(err)
   }
 }
-export const getArticles= async () =>{
-try{
-  await connectToDb()
+export const getArticles = async () => {
+  try {
+    await connectToDb()
 
-  const allArticles= await Article.find({}).sort({createdAt:-1}) as ArticleType[]
-  return allArticles
-  
-}catch (err) {
+    const allArticles = (await Article.find({}).sort({
+      createdAt: -1,
+    })) as ArticleType[]
+    return allArticles
+  } catch (err) {
     console.log(err)
   }
-
-
 }
-export const getArticle= async (id:string|number) =>{
-try{
-  await connectToDb()
+export const getArticle = async (id: string | number) => {
+  try {
+    await connectToDb()
 
-  const ArticleId= await Article.findById({_id:id}) as ArticleType
-  return ArticleId
-  
-}catch (err) {
+    const ArticleId = (await Article.findById({ _id: id })) as ArticleType
+    return ArticleId
+  } catch (err) {
     console.log(err)
   }
-
-
 }
 
 export const addLike = async (formData: FormData) => {
   const session = await auth()
   const id = formData.get('id')
-  const userId=session?.user?.id
+  const userId = session?.user?.id
   try {
     await connectToDb()
-    const article = await Article.findById(id);
+    const article = await Article.findById(id)
     if (!article) {
       return console.log('brak artykułów')
     }
 
     if (!article.likes.includes(userId)) {
-      article.likes.push(userId);
+      article.likes.push(userId)
     } else {
       return console.log('Użytkownik już polubił ten artykuł')
     }
 
-    await article.save();
-    console.log('zapisano' +userId)
+    await article.save()
+    console.log('zapisano' + userId)
     revalidatePath('/article')
   } catch (err) {
     console.log(err)
@@ -145,30 +143,67 @@ export const addLike = async (formData: FormData) => {
 export const addComment = async (formData: FormData) => {
   const session = await auth()
   const id = formData.get('id')
-  const comment=formData.get('comment')
-  const userName=session?.user?.name
- 
-  const commentObj={
-    userName:userName,
-    description:comment
+  const comment = formData.get('comment')
+  const userName = session?.user?.name
+
+  const commentObj = {
+    userName: userName,
+    description: comment,
   }
   try {
     await connectToDb()
-    const article = await Article.findById(id);
+    const article = await Article.findById(id)
     if (!article) {
       return console.log('brak artykułów')
     }
 
     if (!article.comments.includes(commentObj)) {
-      article.comments.push(commentObj);
+      article.comments.push(commentObj)
     } else {
       return console.log('Użytkownik już polubił ten artykuł')
     }
 
-    await article.save();
-    console.log('zapisano' +commentObj.userName)
+    await article.save()
+    console.log('zapisano' + commentObj.userName)
     revalidatePath('/article')
   } catch (err) {
     console.log(err)
+  }
+}
+
+export const deleteBtnArticle = async (formData: FormData) => {
+  const id = formData.get('id')
+
+  try {
+    await connectToDb()
+    await Article.findOneAndDelete({ _id: id })
+    revalidatePath('/dashboard')
+    console.log({ message: `Deleted user ${id}` })
+    return { message: `Deleted user ${id}` }
+  } catch (err) {
+    return { message: 'Failed to delete user' }
+  }
+}
+
+export const editArticle = async (formData: FormData) => {
+  const id = formData.get('id')
+  const title = formData.get('title')
+  const contents = formData.get('contents')
+  const image = formData.get('image')
+  try {
+    await connectToDb()
+    await Article.findOneAndUpdate(
+      { _id: id },
+      {
+        title: title,
+        contents: contents,
+        image: image,
+      }
+    )
+    revalidatePath(`/dashboard`)
+  } catch (err) {
+    return { message: 'Failed to update to db' }
+  } finally {
+    redirect('/dashboard/')
   }
 }

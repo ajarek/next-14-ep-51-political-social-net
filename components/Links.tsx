@@ -17,7 +17,7 @@ const Links = () => {
           height={54}
           className="rounded-full"
         />
-        <h1 className="font-semibold text-xl  capitalize italic ">
+        <h1 className="font-semibold text-xl  capitalize italic max-sm:hidden">
           PoliTy...ka
         </h1>
       </Link>

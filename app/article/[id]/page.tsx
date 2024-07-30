@@ -9,7 +9,7 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
   const session = await auth()
   const newArticle = await getArticle(params.id)
   return (
-    <div className="min-h-[calc(100vh-64px)] grid grid-cols-2 max-lg:grid-cols-1 px-24 py-12 items-start justify-center gap-8">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col  px-24 max-lg:px-4 py-12 items-start justify-center gap-8">
       <div className="">
         <Image
           src={newArticle?.image || ''}
