@@ -4,6 +4,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'www.prawo.pl' },
       { protocol: 'https', hostname: 'ocdn.eu' },
+      { protocol: 'https', hostname: 'img.onet.pl' },
+      
     ],
   },
 }

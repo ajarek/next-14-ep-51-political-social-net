@@ -54,8 +54,13 @@ const articleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
-
+const hostnameSchema = new mongoose.Schema(
+  {
+    hostname:{type:String},
+  }
+)
 
 
 export const User = mongoose.models?.User || mongoose.model('User', userSchema)
 export const Article = mongoose.models?.Article || mongoose.model('Article', articleSchema)
+export const Hostname = mongoose.models?.Hostname || mongoose.model('Hostname', hostnameSchema)

@@ -1,7 +1,8 @@
 'use server'
 
 import connectToDb from './connectToDb'
-import { User, UserWithoutId, Article } from './models'
+
+import { User, UserWithoutId, Article, Hostname } from './models'
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
@@ -81,17 +82,25 @@ export const createArticle = async (formData: FormData) => {
     image: formData.get('image'),
     video: formData.get('video'),
   }
+  const hostnameObj = {
+    hostname:hostname
+  }
   console.log(hostname)
   try {
     await connectToDb()
     const newArticle = new Article(rawFormData)
     await newArticle.save()
+    const newHostname = new Hostname(hostnameObj)
+    await newHostname.save()
+    
     console.log('saved' + newArticle)
+    console.log('saved' +newHostname)
     revalidatePath('/')
   } catch (err) {
     console.log(err)
   }
 }
+
 export const getArticles = async () => {
   try {
     await connectToDb()
