@@ -6,7 +6,7 @@ import { User, UserWithoutId, Article, Hostname } from './models'
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
-import type { Article as ArticleType } from './models'
+import type { Article as ArticleType, Hostname as HostnameType } from './models'
 import { auth } from '@/app/api/auth/auth'
 
 export const addUser = async (formData: UserWithoutId) => {
@@ -214,5 +214,15 @@ export const editArticle = async (formData: FormData) => {
     return { message: 'Failed to update to db' }
   } finally {
     redirect('/dashboard/')
+  }
+}
+export const getHostnames= async () => {
+  try {
+    await connectToDb()
+
+    const allHostnames = await Article.find({}) as HostnameType[]
+    return allHostnames.map((doc) => doc.hostname)
+  } catch (err) {
+    console.log(err)
   }
 }

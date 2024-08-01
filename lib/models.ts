@@ -24,7 +24,9 @@ export type Article = {
     }
   ]
 }
-
+export type Hostname={
+  hostname:string
+}
 export type UserWithoutId = Omit<User, '_id'>
 
 const userSchema = new mongoose.Schema(
@@ -54,6 +56,7 @@ const articleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
 const hostnameSchema = new mongoose.Schema(
   {
     hostname:{type:String},
