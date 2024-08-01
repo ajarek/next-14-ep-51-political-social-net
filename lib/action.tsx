@@ -2,11 +2,11 @@
 
 import connectToDb from './connectToDb'
 
-import { User, UserWithoutId, Article, Hostname } from './models'
+import { User, UserWithoutId, Article } from './models'
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
-import type { Article as ArticleType, Hostname as HostnameType } from './models'
+import type { Article as ArticleType } from './models'
 import { auth } from '@/app/api/auth/auth'
 
 export const addUser = async (formData: UserWithoutId) => {
@@ -73,8 +73,7 @@ export const updateUser = async (formData: FormData) => {
 
 export const createArticle = async (formData: FormData) => {
   const session = await auth()
-  const stringImage=formData?.get('image') as string
-  const hostname=stringImage?.split('//')[1].split('/')[0] 
+
   const rawFormData = {
     userName: session?.user?.name || '',
     title: formData.get('title'),
@@ -82,19 +81,14 @@ export const createArticle = async (formData: FormData) => {
     image: formData.get('image'),
     video: formData.get('video'),
   }
-  const hostnameObj = {
-    hostname:hostname
-  }
-  console.log(hostname)
+
   try {
     await connectToDb()
     const newArticle = new Article(rawFormData)
     await newArticle.save()
-    const newHostname = new Hostname(hostnameObj)
-    await newHostname.save()
-    
+
     console.log('saved' + newArticle)
-    console.log('saved' +newHostname)
+
     revalidatePath('/')
   } catch (err) {
     console.log(err)
@@ -214,15 +208,5 @@ export const editArticle = async (formData: FormData) => {
     return { message: 'Failed to update to db' }
   } finally {
     redirect('/dashboard/')
-  }
-}
-export const getHostnames= async () => {
-  try {
-    await connectToDb()
-
-    const allHostnames = await Article.find({}) as HostnameType[]
-    return allHostnames.map((doc) => doc.hostname)
-  } catch (err) {
-    console.log(err)
   }
 }

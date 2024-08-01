@@ -7,7 +7,7 @@ export type User = {
   password: string
   img: string
   isAdmin: boolean
-} 
+}
 export type Article = {
   [x: string]: any
   _id: string
@@ -19,14 +19,12 @@ export type Article = {
   likes: string[]
   comments: [
     {
-      userName:string,
-      description:string
+      userName: string
+      description: string
     }
   ]
 }
-export type Hostname={
-  hostname:string
-}
+
 export type UserWithoutId = Omit<User, '_id'>
 
 const userSchema = new mongoose.Schema(
@@ -42,28 +40,21 @@ const userSchema = new mongoose.Schema(
 const articleSchema = new mongoose.Schema(
   {
     userName: { type: String, required: true, min: 3, max: 20 },
-    title: { type: String, required: true, unique: true, min: 3,  },
-    contents: { type: String, required: true, min: 6, },
+    title: { type: String, required: true, unique: true, min: 3 },
+    contents: { type: String, required: true, min: 6 },
     image: { type: String },
     video: { type: String },
     likes: { type: Array, default: [] },
     comments: [
       {
-      userName:{type:String, required:true},
-      description: { type: String, required: true },
-      }
+        userName: { type: String, required: true },
+        description: { type: String, required: true },
+      },
     ],
   },
   { timestamps: true }
 )
 
-const hostnameSchema = new mongoose.Schema(
-  {
-    hostname:{type:String},
-  }
-)
-
-
 export const User = mongoose.models?.User || mongoose.model('User', userSchema)
-export const Article = mongoose.models?.Article || mongoose.model('Article', articleSchema)
-export const Hostname = mongoose.models?.Hostname || mongoose.model('Hostname', hostnameSchema)
+export const Article =
+  mongoose.models?.Article || mongoose.model('Article', articleSchema)

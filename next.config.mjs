@@ -2,12 +2,12 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'www.prawo.pl' },
-      { protocol: 'https', hostname: 'ocdn.eu' },
-      { protocol: 'https', hostname: 'img.onet.pl' },
-      
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
-}
+};
 
 export default nextConfig
