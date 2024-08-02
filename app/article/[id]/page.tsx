@@ -5,6 +5,7 @@ import AddLike from '@/components/AddLike'
 import AddComment from '@/components/AddComment'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/app/api/auth/auth'
+
 const ArticleId = async ({ params }: { params: { id: string } }) => {
   const session = await auth()
   const newArticle = await getArticle(params.id)
@@ -41,7 +42,12 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
           {session ? (
             <AddLike id={newArticle && newArticle._id.toString()} />
           ) : (
-            <Button variant={'destructive'} className="w-fit">Zaloguj się aby polubić</Button>
+            <Button
+              variant={'destructive'}
+              className="w-fit"
+            >
+              Zaloguj się aby polubić
+            </Button>
           )}
           <div className="flex gap-2 ">
             <MessageCircleMore
@@ -58,7 +64,10 @@ const ArticleId = async ({ params }: { params: { id: string } }) => {
           {session ? (
             <AddComment id={newArticle && newArticle._id.toString()} />
           ) : (
-            <Button variant={'destructive'} className="w-fit">
+            <Button
+              variant={'destructive'}
+              className="w-fit"
+            >
               Zaloguj się aby dodać komentarz
             </Button>
           )}

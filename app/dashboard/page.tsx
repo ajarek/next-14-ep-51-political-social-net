@@ -1,6 +1,5 @@
 import { auth } from '@/app/api/auth/auth'
 import { getArticles } from '@/lib/action'
-import Articles from '@/components/Articles'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, MessageCircleMore } from 'lucide-react'
@@ -43,7 +42,7 @@ const Dashboard = async () => {
                 </div>
               </div>
 
-              <div className="flex items-center  gap-8">
+              <div className="flex flex-wrap items-center  gap-8">
                 <Image
                   src={art.image}
                   width={80}
@@ -53,8 +52,7 @@ const Dashboard = async () => {
                 <div>{art.contents.slice(0, 150)} ...</div>
               </div>
               <div className="flex items-center justify-between gap-8">
-
-                <div className='flex items-center gap-2 '>
+                <div className="flex items-center gap-2 ">
                   <div className="flex gap-2 max-sm:flex-col">
                     <Heart color={art.likes.length > 0 ? 'red' : 'gray'} />
                     <span>{art.likes.length} polubień</span>
@@ -68,16 +66,18 @@ const Dashboard = async () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/article/${(art._id).toString()}`}
+                    href={`/article/${art._id.toString()}`}
                     passHref={true}
                     className="hover:scale-150 transition-all duration-200"
                   >
                     👁️
                   </Link>
-                  <DeleteBtnArticle id={(art._id).toString()} />
+                  <DeleteBtnArticle id={art._id.toString()} />
                   <Link
-                    href={`/edit?id=${(art._id).toString()}&title=${art.title}&contents=${art.contents}&image=${art.image}`}
-                     className="hover:scale-150 transition-all duration-200"
+                    href={`/edit?id=${art._id.toString()}&title=${
+                      art.title
+                    }&contents=${art.contents}&image=${art.image}`}
+                    className="hover:scale-150 transition-all duration-200"
                   >
                     🖊️
                   </Link>
