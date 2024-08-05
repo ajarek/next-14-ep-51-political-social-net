@@ -55,6 +55,8 @@ const articleSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export const User = mongoose.models?.User || mongoose.model('User', userSchema)
+export const User = 
+  (mongoose.models?.User || mongoose.model('User', userSchema)) as mongoose.Model<User>
+
 export const Article =
-  mongoose.models?.Article || mongoose.model('Article', articleSchema)
+  (mongoose.models?.Article || mongoose.model('Article', articleSchema)) as mongoose.Model<Article>
